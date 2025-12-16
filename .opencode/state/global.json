@@ -1,0 +1,18 @@
+{
+  "system_version": "1.0.0",
+  "created": "2025-12-15T00:00:00Z",
+  "last_updated": "2025-12-15T00:00:00Z",
+  "active_projects": [],
+  "total_projects": 0,
+  "total_research_count": 0,
+  "total_plans_count": 0,
+  "total_implementations_count": 0,
+  "last_research_date": null,
+  "last_plan_date": null,
+  "last_implementation_date": null,
+  "metrics": {
+    "avg_startup_time_ms": null,
+    "total_plugins": null,
+    "total_lsp_servers": null
+  }
+}
