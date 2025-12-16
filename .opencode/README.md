@@ -153,10 +153,15 @@ Specialist agents execute work directly without delegation:
 
 ## Commands
 
+### Core Workflow Commands
+
 - `/research "<topic>"` - Research a topic
 - `/plan <overview-path> ["prompt"]` - Create implementation plan
 - `/revise <plan-path> "<changes>"` - Revise existing plan
 - `/implement <plan-path>` - Execute implementation plan
+
+### Utility Commands
+
 - `/todo` - Show project status
 - `/health-check` - Run :checkhealth and report
 - `/optimize-performance` - Analyze and improve performance
@@ -165,6 +170,13 @@ Specialist agents execute work directly without delegation:
 - `/update-docs` - Update documentation
 - `/empty-archive` - Clean up archived projects
 - `/help` - Show help information
+
+### Meta-System Commands
+
+- `/create-agent "<name>" "<description>"` - Create new agent dynamically
+- `/create-command "<name>" "<description>"` - Create new command dynamically
+- `/modify-agent "<agent-name>" "<changes>"` - Modify existing agent
+- `/modify-command "<command-name>" "<changes>"` - Modify existing command
 
 ---
 
@@ -197,6 +209,30 @@ Regular health checks and cleanup:
 3. Create plans to fix issues
 4. Implement fixes
 
+### Meta-System Extension
+
+Extend the system dynamically:
+
+1. **Create New Agent**:
+   ```
+   /create-agent "plugin-updater" "Agent that checks for plugin updates and creates update plans"
+   ```
+
+2. **Create New Command**:
+   ```
+   /create-command "check-updates" "Check all plugins for available updates"
+   ```
+
+3. **Modify Existing Agent**:
+   ```
+   /modify-agent "researcher" "Add support for searching Stack Overflow for solutions"
+   ```
+
+4. **Modify Existing Command**:
+   ```
+   /modify-command "health-check" "Add performance metrics to health check output"
+   ```
+
 ---
 
 ## Key Features
@@ -227,6 +263,15 @@ Regular health checks and cleanup:
 - Per-project state
 - TODO.md for project status
 - Comprehensive logging
+
+### Meta-System (Self-Extensibility)
+
+- Create new agents dynamically with `/create-agent`
+- Create new commands dynamically with `/create-command`
+- Modify existing agents with `/modify-agent`
+- Modify existing commands with `/modify-command`
+- Meta agent coordinates agent-generator and command-generator subagents
+- System can extend itself based on user needs
 
 ---
 

@@ -28,6 +28,7 @@ The system uses two types of agents with distinct delegation patterns:
 - **Implementer**: Delegates to implementation subagents (code-generator, code-modifier, test-runner, doc-generator)
 - **Tester**: Delegates to test subagents (health-checker, plugin-tester, lsp-validator, keybinding-tester, performance-tester)
 - **Documenter**: Delegates to documentation subagents (module-documenter, example-generator, guide-writer, readme-generator)
+- **Meta**: Delegates to meta subagents (agent-generator, command-generator) for system self-extension
 
 **Characteristics**:
 - Use task tool for ALL work execution
@@ -134,9 +135,9 @@ User Request
     ↓
 Orchestrator (neovim-orchestrator.md)
     ↓
-Primary Agents (researcher, planner, reviser, implementer, documenter, tester)
+Primary Agents (researcher, planner, reviser, implementer, documenter, tester, meta)
     ↓
-Specialized Subagents (organized by category: research, implementation, analysis, configuration)
+Specialized Subagents (organized by category: research, implementation, analysis, configuration, meta)
 ```
 
 ---
@@ -156,6 +157,10 @@ Specialized Subagents (organized by category: research, implementation, analysis
 - `/plan` → planner agent
 - `/revise` → reviser agent
 - `/implement` → implementer agent
+- `/create-agent` → meta agent
+- `/create-command` → meta agent
+- `/modify-agent` → meta agent
+- `/modify-command` → meta agent
 - Utility commands → direct execution
 
 ---
@@ -245,13 +250,34 @@ Specialized Subagents (organized by category: research, implementation, analysis
 
 ---
 
+### Meta Agent
+
+**File**: `agent/meta.md`
+
+**Workflow**:
+1. Parse meta-system request (create/modify agent or command)
+2. Invoke appropriate meta subagent
+3. Validate generated/modified artifact
+4. Test new/modified functionality
+5. Update system documentation
+6. Commit changes
+
+**Subagents Used** (from `subagents/meta/`):
+- agent-generator (create new agents)
+- command-generator (create new commands)
+
+**Output**: New or modified agent/command with documentation
+
+---
+
 ## Subagent Layer
 
-Subagents are organized into 4 categories under `agent/subagents/`:
+Subagents are organized into 5 categories under `agent/subagents/`:
 - **research/** - Research and analysis specialists (5 agents)
 - **implementation/** - Code generation and modification (2 agents)
 - **analysis/** - Specialized analysis tools (3 agents)
 - **configuration/** - Domain-specific configuration (3 agents)
+- **meta/** - System self-extension tools (2 agents)
 
 ### Research Subagents (`subagents/research/`)
 
@@ -369,6 +395,33 @@ Subagents are organized into 4 categories under `agent/subagents/`:
 - Mason integration
 - Custom handler configuration
 - Returns: LSP configuration report
+
+---
+
+### Meta Subagents (`subagents/meta/`)
+
+**agent-generator**:
+- Creates new agent definitions
+- Follows agent template patterns
+- Implements delegation patterns
+- Generates agent documentation
+- Returns: Brief summary + new agent file path
+
+**command-generator**:
+- Creates new command definitions
+- Follows command template patterns
+- Implements routing logic
+- Generates command documentation
+- Returns: Brief summary + new command file path
+
+**Modification Pattern**:
+Both subagents can also modify existing agents/commands:
+- Read existing artifact
+- Apply requested changes
+- Preserve existing functionality
+- Update documentation
+- Validate modifications
+- Returns: Brief summary + modified file path
 
 ---
 
@@ -553,21 +606,78 @@ All errors logged to `logs/errors.log` with:
 
 ## Extensibility
 
-### Adding New Subagents
+### Meta-System (Self-Extension)
 
+The system can extend itself dynamically through the meta agent:
+
+**Creating New Agents**:
+```
+/create-agent "agent-name" "Agent description and responsibilities"
+```
+
+The meta agent:
+1. Invokes agent-generator subagent
+2. Creates agent file in `agent/` directory
+3. Follows delegation patterns (coordinator/specialist)
+4. Generates documentation
+5. Updates orchestrator routing if needed
+6. Commits new agent to git
+
+**Creating New Commands**:
+```
+/create-command "command-name" "Command description and behavior"
+```
+
+The meta agent:
+1. Invokes command-generator subagent
+2. Creates command file in `command/` directory
+3. Implements command logic
+4. Generates documentation
+5. Updates orchestrator routing
+6. Commits new command to git
+
+**Modifying Existing Agents**:
+```
+/modify-agent "agent-name" "Changes to apply"
+```
+
+The meta agent:
+1. Reads existing agent definition
+2. Invokes agent-generator with modification mode
+3. Applies requested changes
+4. Preserves existing functionality
+5. Updates documentation
+6. Commits modifications to git
+
+**Modifying Existing Commands**:
+```
+/modify-command "command-name" "Changes to apply"
+```
+
+The meta agent:
+1. Reads existing command definition
+2. Invokes command-generator with modification mode
+3. Applies requested changes
+4. Preserves existing functionality
+5. Updates documentation
+6. Commits modifications to git
+
+### Manual Extension (Traditional)
+
+You can still manually extend the system:
+
+**Adding New Subagents**:
 1. Create subagent file in `agent/subagents/`
 2. Define responsibilities and workflow
 3. Implement summary return pattern
 4. Update primary agent to use it
 
-### Adding New Commands
-
+**Adding New Commands**:
 1. Create command file in `command/`
 2. Define command behavior
 3. Update orchestrator routing if needed
 
-### Adding New Context
-
+**Adding New Context**:
 1. Add files to appropriate `context/` subdirectory
 2. Reference in relevant agents
 3. Keep context files focused and concise
