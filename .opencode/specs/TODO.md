@@ -6,13 +6,25 @@ Track all configuration projects and their status.
 
 ## Not Started
 
-<!-- Projects that have been planned but not yet implemented -->
+<!-- New projects will be added here -->
 
 ---
 
 ## In Progress
 
-<!-- Projects currently being implemented -->
+### Project 003: System Enhancement from ProofChecker Patterns (Phase 1/4)
+**Path**: `specs/003_system_enhancement_from_proofchecker/`  
+**Plan**: `plans/implementation_v1.md`  
+**Goal**: Enhance .config/.opencode system with patterns from ProofChecker  
+**Phases**: 4 (Context, Meta-System, Project Structure, Workflow)  
+**Effort**: 20-30 hours  
+**Priority**: High
+
+**Key Enhancements**:
+- Context index and essential patterns
+- Meta-system for self-extensibility
+- Project summaries
+- Approval gates and quick-win detection
 
 ---
 
