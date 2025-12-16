@@ -18,7 +18,7 @@ description: "Executes implementation plans in waves with phase tracking and git
 <task>Execute implementation plan in waves, coordinate implementation subagents, track progress, and commit changes</task>
 
 <instructions>
-  1. Route this request to the implementer subagent: @subagents/implementer
+  1. Route this request to the implementer agent: @implementer
   2. Pass the plan_path (path to implementation plan)
   3. The implementer will:
      - Read and parse implementation plan

@@ -19,7 +19,7 @@ description: "Creates phased implementation plans from research findings with wa
 <task>Create detailed, phased implementation plan from research findings with clear success criteria and dependency tracking</task>
 
 <instructions>
-  1. Route this request to the planner subagent: @subagents/planner
+  1. Route this request to the planner agent: @planner
   2. Pass the overview_path (path to research OVERVIEW.md)
   3. Pass optional planning_instructions for specific requirements
   4. The planner will:

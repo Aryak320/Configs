@@ -1,6 +1,6 @@
 ---
 description: "Research orchestrator for NeoVim configuration analysis with parallel subagent coordination"
-mode: subagent
+mode: primary
 temperature: 0.3
 tools:
   read: true

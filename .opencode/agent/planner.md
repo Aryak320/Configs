@@ -1,6 +1,6 @@
 ---
 description: "Implementation plan creator with phased approach and wave-based parallelization"
-mode: subagent
+mode: primary
 temperature: 0.2
 tools:
   read: true

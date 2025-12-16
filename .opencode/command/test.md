@@ -18,7 +18,7 @@ description: "Tests NeoVim configurations and validates implementations"
 <task>Test NeoVim configurations and validate implementations</task>
 
 <instructions>
-  1. Route this request to the tester subagent: @subagents/tester
+  1. Route this request to the tester agent: @tester
   2. Pass target (plugin, LSP, keybinding, or "all")
   3. Pass optional test_type (functionality, performance, or "full")
   4. The tester will:

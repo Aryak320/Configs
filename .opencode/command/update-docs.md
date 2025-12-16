@@ -17,7 +17,7 @@ description: "Updates documentation for NeoVim configurations and modules"
 <task>Create or update documentation for NeoVim configurations</task>
 
 <instructions>
-  1. Route this request to the documenter subagent: @subagents/documenter
+  1. Route this request to the documenter agent: @documenter
   2. Pass target (module path, "all", or "keybindings")
   3. The documenter will:
      - Analyze code to document

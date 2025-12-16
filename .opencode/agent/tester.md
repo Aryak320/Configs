@@ -1,6 +1,6 @@
 ---
 description: "Tests NeoVim configurations, validates implementations, and runs health checks"
-mode: subagent
+mode: primary
 temperature: 0.2
 tools:
   read: true

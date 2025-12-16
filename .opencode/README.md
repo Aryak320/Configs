@@ -47,32 +47,34 @@ This system provides a structured, agent-based approach to managing your NeoVim 
    - Routes requests to primary agents
    - Minimal context, pure delegation
 
-2. **Primary Agents** (`agent/subagents/`)
+2. **Primary Agents** (`agent/`)
    - **Researcher**: Conducts multi-faceted research
    - **Planner**: Creates implementation plans
    - **Reviser**: Updates plans with new requirements
    - **Implementer**: Executes plans with testing
+   - **Tester**: Validates implementations and runs health checks
+   - **Documenter**: Creates and updates documentation
 
-3. **Research Subagents** (invoked by researcher)
+3. **Research Subagents** (`agent/subagents/research/`)
    - codebase-analyzer
    - docs-fetcher
    - best-practices-researcher
    - dependency-analyzer
    - refactor-finder
 
-4. **Implementation Subagents** (invoked by implementer)
+4. **Implementation Subagents** (`agent/subagents/implementation/`)
    - code-generator
    - code-modifier
-   - tester
-   - documenter
 
-5. **NeoVim-Specific Subagents**
-   - plugin-analyzer
-   - lsp-configurator
-   - keybinding-optimizer
-   - performance-profiler
-   - health-checker
+5. **Analysis Subagents** (`agent/subagents/analysis/`)
    - cruft-finder
+   - plugin-analyzer
+   - performance-profiler
+
+6. **Configuration Subagents** (`agent/subagents/configuration/`)
+   - health-checker
+   - keybinding-optimizer
+   - lsp-configurator
 
 ---
 
@@ -82,7 +84,17 @@ This system provides a structured, agent-based approach to managing your NeoVim 
 .opencode/
   agent/                    # Agent definitions
     neovim-orchestrator.md  # Main orchestrator
-    subagents/              # All subagents
+    documenter.md           # Documentation agent
+    implementer.md          # Implementation agent
+    planner.md              # Planning agent
+    researcher.md           # Research agent
+    reviser.md              # Revision agent
+    tester.md               # Testing agent
+    subagents/              # Specialized subagents
+      research/             # Research specialists
+      implementation/       # Code generation/modification
+      analysis/             # Analysis tools
+      configuration/        # Configuration specialists
   context/                  # Context files for agents
     domain/                 # Domain knowledge
     processes/              # Workflow definitions

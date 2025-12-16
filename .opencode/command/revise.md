@@ -19,7 +19,7 @@ description: "Revises existing implementation plans with new research and versio
 <task>Update existing implementation plan with new research and requirements while preserving plan history</task>
 
 <instructions>
-  1. Route this request to the reviser subagent: @subagents/reviser
+  1. Route this request to the reviser agent: @reviser
   2. Pass the plan_path (path to existing implementation plan)
   3. Pass revision_instructions describing what needs to change
   4. The reviser will:

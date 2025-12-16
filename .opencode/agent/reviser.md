@@ -1,6 +1,6 @@
 ---
 description: "Implementation plan reviser with version control and research integration"
-mode: subagent
+mode: primary
 temperature: 0.2
 tools:
   read: true

@@ -14,31 +14,46 @@ All remaining components of the NeoVim configuration management system have been
 
 ## Created Components
 
-### 1. Research Subagents (5 files) ✅
+### 1. Primary Agents (7 files) ✅
 
-- `agent/subagents/codebase-analyzer.md` - Scans NeoVim config for patterns
-- `agent/subagents/docs-fetcher.md` - Fetches external documentation
-- `agent/subagents/best-practices-researcher.md` - Researches community patterns
-- `agent/subagents/dependency-analyzer.md` - Analyzes plugin dependencies
-- `agent/subagents/refactor-finder.md` - Identifies improvement opportunities
+- `agent/neovim-orchestrator.md` - Main orchestrator (pre-existing)
+- `agent/researcher.md` - Research orchestrator
+- `agent/planner.md` - Implementation plan creator
+- `agent/reviser.md` - Plan revision manager
+- `agent/implementer.md` - Implementation executor
+- `agent/tester.md` - Configuration tester
+- `agent/documenter.md` - Documentation generator
 
-### 2. Implementation Subagents (4 files) ✅
+### 2. Research Subagents (5 files) ✅
 
-- `agent/subagents/code-generator.md` - Creates new Lua modules and configs
-- `agent/subagents/code-modifier.md` - Modifies existing configurations
-- `agent/subagents/tester.md` - Runs automated tests and validation
-- `agent/subagents/documenter.md` - Updates documentation
+Located in `agent/subagents/research/`:
+- `codebase-analyzer.md` - Scans NeoVim config for patterns
+- `docs-fetcher.md` - Fetches external documentation
+- `best-practices-researcher.md` - Researches community patterns
+- `dependency-analyzer.md` - Analyzes plugin dependencies
+- `refactor-finder.md` - Identifies improvement opportunities
 
-### 3. NeoVim-Specific Subagents (6 files) ✅
+### 3. Implementation Subagents (2 files) ✅
 
-- `agent/subagents/plugin-analyzer.md` - Deep plugin analysis
-- `agent/subagents/lsp-configurator.md` - LSP setup optimization
-- `agent/subagents/keybinding-optimizer.md` - Keybinding organization
-- `agent/subagents/performance-profiler.md` - Startup time analysis
-- `agent/subagents/health-checker.md` - :checkhealth interpretation
-- `agent/subagents/cruft-finder.md` - Unused code detection
+Located in `agent/subagents/implementation/`:
+- `code-generator.md` - Creates new Lua modules and configs
+- `code-modifier.md` - Modifies existing configurations
 
-### 4. Context Files (24 files) ✅
+### 4. Analysis Subagents (3 files) ✅
+
+Located in `agent/subagents/analysis/`:
+- `cruft-finder.md` - Unused code detection
+- `plugin-analyzer.md` - Deep plugin analysis
+- `performance-profiler.md` - Startup time analysis
+
+### 5. Configuration Subagents (3 files) ✅
+
+Located in `agent/subagents/configuration/`:
+- `health-checker.md` - :checkhealth interpretation
+- `keybinding-optimizer.md` - Keybinding organization
+- `lsp-configurator.md` - LSP setup optimization
+
+### 6. Context Files (24 files) ✅
 
 **Domain Knowledge (10 files)**:
 - neovim-architecture.md
@@ -72,14 +87,14 @@ All remaining components of the NeoVim configuration management system have been
 - plugin-config-template.md
 - commit-message-template.md
 
-### 5. Workflow Definitions (4 files) ✅
+### 7. Workflow Definitions (4 files) ✅
 
 - `workflows/research-workflow.md`
 - `workflows/planning-workflow.md`
 - `workflows/revision-workflow.md`
 - `workflows/implementation-workflow.md`
 
-### 6. Custom Commands (13 files) ✅
+### 8. Custom Commands (13 files) ✅
 
 - `command/research.md`
 - `command/plan.md`
@@ -95,32 +110,30 @@ All remaining components of the NeoVim configuration management system have been
 - `command/help.md`
 - `command/show-state.md`
 
-### 7. Specs Structure (3 items) ✅
+### 9. Specs Structure (3 items) ✅
 
 - `specs/TODO.md` - Project tracking
 - `specs/README.md` - Specs system documentation
 - `specs/archive/.gitkeep` - Archive directory
 
-### 8. State Management (3 files) ✅
+### 10. State Management (3 files) ✅
 
 - `state/global.json` - Initial global state
 - `state/README.md` - State system documentation
 - `logs/README.md` - Logging system documentation
 - `logs/.gitkeep` - Logs directory
 
-### 9. System Documentation (3 files) ✅
+### 11. System Documentation (3 files) ✅
 
 - `README.md` - Complete system guide
 - `ARCHITECTURE.md` - System architecture
 - `QUICK_START.md` - Getting started guide
 
-### 10. Pre-Existing Components ✅
+### 12. Pre-Existing Components ✅
 
 - `agent/neovim-orchestrator.md` - Main orchestrator (already created)
-- `agent/subagents/researcher.md` - Researcher agent (already created)
-- `agent/subagents/planner.md` - Planner agent (already created)
-- `agent/subagents/reviser.md` - Reviser agent (already created)
-- `agent/subagents/implementer.md` - Implementer agent (already created)
+
+**Note**: The researcher, planner, reviser, implementer, tester, and documenter agents were promoted from subagent to primary status during the agent reorganization (2025-12-15).
 
 ---
 

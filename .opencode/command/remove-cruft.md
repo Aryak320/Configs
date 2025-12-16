@@ -13,7 +13,7 @@ description: "Identifies unused plugins, dead code, and orphaned configs for saf
 <task>Identify unused and obsolete configuration for safe removal</task>
 
 <instructions>
-  1. Route this request to the cruft-finder subagent: @subagents/cruft-finder
+  1. Route this request to the cruft-finder subagent: @subagents/analysis/cruft-finder
   2. The cruft-finder will:
      - Find disabled plugins (enabled = false)
      - Detect unused configurations

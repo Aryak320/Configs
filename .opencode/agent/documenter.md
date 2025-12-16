@@ -1,6 +1,6 @@
 ---
 description: "Creates and updates documentation for NeoVim configurations"
-mode: subagent
+mode: primary
 temperature: 0.3
 tools:
   read: true

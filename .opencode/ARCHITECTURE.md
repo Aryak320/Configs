@@ -22,9 +22,9 @@ User Request
     ↓
 Orchestrator (neovim-orchestrator.md)
     ↓
-Primary Agents (researcher, planner, reviser, implementer)
+Primary Agents (researcher, planner, reviser, implementer, documenter, tester)
     ↓
-Specialized Subagents (codebase-analyzer, code-generator, etc.)
+Specialized Subagents (organized by category: research, implementation, analysis, configuration)
 ```
 
 ---
@@ -52,7 +52,7 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 
 ### Researcher Agent
 
-**File**: `agent/subagents/researcher.md`
+**File**: `agent/researcher.md`
 
 **Workflow**:
 1. Generate project name and ID
@@ -62,7 +62,7 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 5. Create OVERVIEW.md synthesis
 6. Commit to git
 
-**Subagents Used**:
+**Subagents Used** (from `subagents/research/`):
 - codebase-analyzer
 - docs-fetcher
 - best-practices-researcher
@@ -75,7 +75,7 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 
 ### Planner Agent
 
-**File**: `agent/subagents/planner.md`
+**File**: `agent/planner.md`
 
 **Workflow**:
 1. Read research OVERVIEW.md
@@ -92,7 +92,7 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 
 ### Reviser Agent
 
-**File**: `agent/subagents/reviser.md`
+**File**: `agent/reviser.md`
 
 **Workflow**:
 1. Read existing plan
@@ -108,7 +108,7 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 
 ### Implementer Agent
 
-**File**: `agent/subagents/implementer.md`
+**File**: `agent/implementer.md`
 
 **Workflow**:
 1. Parse implementation plan
@@ -121,9 +121,11 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
    - Commit completion
 6. Update TODO.md to Completed
 
-**Subagents Used**:
+**Subagents Used** (from `subagents/implementation/`):
 - code-generator (new files)
 - code-modifier (changes)
+
+**Primary Agents Used**:
 - tester (validation)
 - documenter (documentation)
 
@@ -133,7 +135,13 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 
 ## Subagent Layer
 
-### Research Subagents
+Subagents are organized into 4 categories under `agent/subagents/`:
+- **research/** - Research and analysis specialists (5 agents)
+- **implementation/** - Code generation and modification (2 agents)
+- **analysis/** - Specialized analysis tools (3 agents)
+- **configuration/** - Domain-specific configuration (3 agents)
+
+### Research Subagents (`subagents/research/`)
 
 **codebase-analyzer**:
 - Scans NeoVim config for patterns
@@ -167,7 +175,7 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 
 ---
 
-### Implementation Subagents
+### Implementation Subagents (`subagents/implementation/`)
 
 **code-generator**:
 - Creates new Lua modules
@@ -181,14 +189,26 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 - Updates to new APIs
 - Returns: Brief summary + modified file paths
 
-**tester**:
+---
+
+### Tester Agent (Primary)
+
+**File**: `agent/tester.md`
+
+**Responsibilities**:
 - Runs :checkhealth
 - Tests plugin functionality
 - Validates LSP servers
 - Measures performance
 - Returns: Test status (PASS/FAIL) + summary
 
-**documenter**:
+---
+
+### Documenter Agent (Primary)
+
+**File**: `agent/documenter.md`
+
+**Responsibilities**:
 - Generates module documentation
 - Creates usage examples
 - Updates README files
@@ -196,14 +216,47 @@ Specialized Subagents (codebase-analyzer, code-generator, etc.)
 
 ---
 
-### NeoVim-Specific Subagents
+### Analysis Subagents (`subagents/analysis/`)
 
-**plugin-analyzer**: Deep plugin analysis
-**lsp-configurator**: LSP setup optimization
-**keybinding-optimizer**: Keybinding organization (which-key vs keymaps)
-**performance-profiler**: Startup time analysis
-**health-checker**: :checkhealth interpretation
-**cruft-finder**: Unused code detection
+**cruft-finder**:
+- Finds unused code and plugins
+- Identifies disabled configurations
+- Detects orphaned files
+- Returns: Cruft report with removal recommendations
+
+**plugin-analyzer**:
+- Deep plugin analysis
+- Compatibility checking
+- Health assessment
+- Returns: Plugin analysis report
+
+**performance-profiler**:
+- Startup time analysis
+- Plugin loading profiling
+- Bottleneck identification
+- Returns: Performance report with optimizations
+
+---
+
+### Configuration Subagents (`subagents/configuration/`)
+
+**health-checker**:
+- :checkhealth interpretation
+- Issue categorization by severity
+- Actionable fix recommendations
+- Returns: Health report with fixes
+
+**keybinding-optimizer**:
+- Keybinding organization (which-key vs keymaps)
+- Conflict detection
+- Layout optimization
+- Returns: Keybinding optimization report
+
+**lsp-configurator**:
+- LSP setup optimization
+- Mason integration
+- Custom handler configuration
+- Returns: LSP configuration report
 
 ---
 

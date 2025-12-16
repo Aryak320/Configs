@@ -13,7 +13,7 @@ description: "Profiles startup time and recommends lazy-loading optimizations"
 <task>Profile NeoVim startup, identify bottlenecks, and recommend lazy-loading optimizations</task>
 
 <instructions>
-  1. Route this request to the performance-profiler subagent: @subagents/performance-profiler
+  1. Route this request to the performance-profiler subagent: @subagents/analysis/performance-profiler
   2. The profiler will:
      - Run nvim --startuptime analysis
      - Profile plugin loading times

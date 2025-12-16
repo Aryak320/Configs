@@ -16,7 +16,7 @@ description: "Initiates comprehensive research on NeoVim configuration topics wi
 <task>Conduct comprehensive research on the provided topic, coordinate parallel research subagents, and create detailed OVERVIEW.md with findings</task>
 
 <instructions>
-  1. Route this request to the researcher subagent: @subagents/researcher
+  1. Route this request to the researcher agent: @researcher
   2. Pass the research_prompt from $ARGUMENTS
   3. The researcher will:
      - Generate semantic project name

@@ -13,7 +13,7 @@ description: "Runs NeoVim :checkhealth and provides actionable fixes for issues"
 <task>Run NeoVim health checks, interpret results, and provide actionable fixes</task>
 
 <instructions>
-  1. Route this request to the health-checker subagent: @subagents/health-checker
+  1. Route this request to the health-checker subagent: @subagents/configuration/health-checker
   2. The health-checker will:
      - Run nvim --headless +"checkhealth" +"quit"
      - Parse and categorize results (critical, warning, ok)

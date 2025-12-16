@@ -1,6 +1,6 @@
 ---
 description: "Implementation executor with wave-based parallelization and phase tracking"
-mode: subagent
+mode: primary
 temperature: 0.2
 tools:
   read: true
