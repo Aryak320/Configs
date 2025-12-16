@@ -180,7 +180,7 @@ This document summarizes the validation results for the delegation optimization 
 - ✓ tester.md (+382 lines)
 - ✓ documenter.md (+369 lines)
 - ✓ planner.md (+131 lines)
-- ✓ neovim-orchestrator.md (+67 lines)
+- ✓ orchestrator.md (+67 lines)
 
 ### Commands (6 files)
 

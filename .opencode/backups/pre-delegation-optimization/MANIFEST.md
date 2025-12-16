@@ -13,7 +13,7 @@
 - tester.md
 - documenter.md
 - planner.md
-- neovim-orchestrator.md
+- orchestrator.md
 
 ### Commands (6 files)
 - research.md

@@ -133,7 +133,7 @@ No delegation - plan creation IS the planner's specialty
 ```
 User Request
     ↓
-Orchestrator (neovim-orchestrator.md)
+Orchestrator (orchestrator.md)
     ↓
 Primary Agents (researcher, planner, reviser, implementer, documenter, tester, meta)
     ↓
@@ -144,7 +144,7 @@ Specialized Subagents (organized by category: research, implementation, analysis
 
 ## Orchestrator Layer
 
-**File**: `agent/neovim-orchestrator.md`
+**File**: `agent/orchestrator.md`
 
 **Responsibilities**:
 - Parse user requests

@@ -4,7 +4,7 @@
 
 ```
 .opencode/agent/
-├── neovim-orchestrator.md (mode: primary)
+├── orchestrator.md (mode: primary)
 └── subagents/
     ├── best-practices-researcher.md (mode: subagent)
     ├── code-generator.md (mode: subagent)
@@ -35,7 +35,7 @@ Total: 1 primary, 19 subagents (flat structure)
 
 ```
 .opencode/agent/
-├── neovim-orchestrator.md (mode: primary)
+├── orchestrator.md (mode: primary)
 ├── documenter.md (mode: primary) ← PROMOTED
 ├── implementer.md (mode: primary) ← PROMOTED
 ├── planner.md (mode: primary) ← PROMOTED
@@ -76,7 +76,7 @@ Total: 7 primary, 13 subagents (organized into 4 categories)
                              ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                    ORCHESTRATOR (Primary)                        │
-│                  neovim-orchestrator.md                          │
+│                  orchestrator.md                          │
 │                                                                   │
 │  Routes requests to appropriate primary agents                   │
 └────────────────────────────┬────────────────────────────────────┘
@@ -211,7 +211,7 @@ Total: 7 primary, 13 subagents (organized into 4 categories)
 ### Before
 ```
 agent/
-├── 1 file (neovim-orchestrator.md)
+├── 1 file (orchestrator.md)
 └── subagents/
     └── 19 files (all agents)
 ```

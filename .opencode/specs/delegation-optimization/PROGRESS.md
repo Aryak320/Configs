@@ -177,7 +177,7 @@
 3. Add routing logic documentation
 
 **Files to Modify**:
-- `.opencode/agent/neovim-orchestrator.md`
+- `.opencode/agent/orchestrator.md`
 
 ---
 

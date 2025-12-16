@@ -31,7 +31,7 @@ The NeoVim Configuration Management System is a research-driven, agent-based dev
 
 | File | Type | Description |
 |------|------|-------------|
-| `neovim-orchestrator.md` | Specialist | Routes requests to primary agents |
+| `orchestrator.md` | Specialist | Routes requests to primary agents |
 | `researcher.md` | Coordinator | Orchestrates multi-faceted research via subagents |
 | `planner.md` | Specialist | Creates phased implementation plans |
 | `reviser.md` | Conditional | Updates plans, delegates research when needed |

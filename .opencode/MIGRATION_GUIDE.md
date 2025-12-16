@@ -25,7 +25,7 @@ This guide documents the migration process for the global delegation optimizatio
 - planner.md - Added note explaining no delegation
 
 **Orchestrator** (1):
-- neovim-orchestrator.md - Added delegation architecture overview
+- orchestrator.md - Added delegation architecture overview
 
 ### Command Updates (6 commands)
 

@@ -43,7 +43,7 @@ This system provides a structured, agent-based approach to managing your NeoVim 
 
 ### Main Components
 
-1. **Orchestrator** (`agent/neovim-orchestrator.md`)
+1. **Orchestrator** (`agent/orchestrator.md`)
    - Routes requests to primary agents
    - Minimal context, pure delegation
 
@@ -83,7 +83,7 @@ This system provides a structured, agent-based approach to managing your NeoVim 
 ```
 .opencode/
   agent/                    # Agent definitions
-    neovim-orchestrator.md  # Main orchestrator
+    orchestrator.md  # Main orchestrator
     documenter.md           # Documentation agent
     implementer.md          # Implementation agent
     planner.md              # Planning agent

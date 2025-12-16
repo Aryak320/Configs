@@ -152,7 +152,7 @@ Successfully completed all 10 phases of the global delegation optimization proje
 - Documented context window efficiency and parallel execution
 
 **Metrics**:
-- +67 lines to neovim-orchestrator.md
+- +67 lines to orchestrator.md
 
 ---
 
@@ -202,7 +202,7 @@ Successfully completed all 10 phases of the global delegation optimization proje
 - tester.md (+382 lines)
 - documenter.md (+369 lines)
 - planner.md (+131 lines)
-- neovim-orchestrator.md (+67 lines)
+- orchestrator.md (+67 lines)
 
 **Commands** (6 files):
 - research.md (+80 lines)

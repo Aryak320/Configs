@@ -16,7 +16,7 @@ All remaining components of the NeoVim configuration management system have been
 
 ### 1. Primary Agents (7 files) ✅
 
-- `agent/neovim-orchestrator.md` - Main orchestrator (pre-existing)
+- `agent/orchestrator.md` - Main orchestrator (pre-existing)
 - `agent/researcher.md` - Research orchestrator
 - `agent/planner.md` - Implementation plan creator
 - `agent/reviser.md` - Plan revision manager
@@ -131,7 +131,7 @@ Located in `agent/subagents/configuration/`:
 
 ### 12. Pre-Existing Components ✅
 
-- `agent/neovim-orchestrator.md` - Main orchestrator (already created)
+- `agent/orchestrator.md` - Main orchestrator (already created)
 
 **Note**: The researcher, planner, reviser, implementer, tester, and documenter agents were promoted from subagent to primary status during the agent reorganization (2025-12-15).
 
@@ -142,7 +142,7 @@ Located in `agent/subagents/configuration/`:
 ```
 /home/benjamin/.config/.opencode/
 ├── agent/
-│   ├── neovim-orchestrator.md
+│   ├── orchestrator.md
 │   └── subagents/
 │       ├── researcher.md
 │       ├── planner.md

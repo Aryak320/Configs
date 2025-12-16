@@ -76,7 +76,7 @@ Specialist agents execute work directly without delegation:
 
 ### Main Components
 
-1. **Orchestrator** (`agent/neovim-orchestrator.md`)
+1. **Orchestrator** (`agent/orchestrator.md`)
    - Routes requests to primary agents
    - Minimal context, pure delegation
 
@@ -116,7 +116,7 @@ Specialist agents execute work directly without delegation:
 ```
 .opencode/
   agent/                    # Agent definitions
-    neovim-orchestrator.md  # Main orchestrator
+    orchestrator.md  # Main orchestrator
     documenter.md           # Documentation agent
     implementer.md          # Implementation agent
     planner.md              # Planning agent

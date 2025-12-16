@@ -19,7 +19,7 @@ This plan reorganizes the .opencode agent structure to:
 **Current Structure**:
 ```
 agent/
-  neovim-orchestrator.md (primary)
+  orchestrator.md (primary)
   subagents/
     [19 agents, all mode: subagent]
 ```
@@ -27,7 +27,7 @@ agent/
 **Target Structure**:
 ```
 agent/
-  neovim-orchestrator.md (primary)
+  orchestrator.md (primary)
   documenter.md (primary)
   implementer.md (primary)
   planner.md (primary)
@@ -222,7 +222,7 @@ grep "@subagents/analysis/performance-profiler" /home/benjamin/.config/.opencode
    ```
    User Request
        ↓
-   Orchestrator (neovim-orchestrator.md)
+   Orchestrator (orchestrator.md)
        ↓
    Primary Agents (researcher, planner, reviser, implementer, documenter, tester)
        ↓
@@ -260,7 +260,7 @@ grep "@subagents/analysis/performance-profiler" /home/benjamin/.config/.opencode
    ```
    .opencode/
      agent/
-       neovim-orchestrator.md
+       orchestrator.md
        documenter.md
        implementer.md
        planner.md
@@ -432,7 +432,7 @@ echo ""
 # Test 3: Mode declarations
 echo "Test 3: Mode declarations"
 PRIMARY_MODE_COUNT=0
-for agent in neovim-orchestrator documenter implementer planner researcher reviser tester; do
+for agent in orchestrator documenter implementer planner researcher reviser tester; do
   if grep -q "mode: primary" /home/benjamin/.config/.opencode/agent/$agent.md 2>/dev/null; then
     PRIMARY_MODE_COUNT=$((PRIMARY_MODE_COUNT + 1))
   else

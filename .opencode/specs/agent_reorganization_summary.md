@@ -7,7 +7,7 @@ This plan reorganizes the .opencode agent structure to improve clarity and disco
 ### What Changes
 
 **Before**:
-- 1 primary agent (neovim-orchestrator)
+- 1 primary agent (orchestrator)
 - 19 subagents (all in flat `subagents/` directory)
 
 **After**:

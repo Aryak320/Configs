@@ -39,7 +39,7 @@ A complete, production-ready plan to reorganize your .opencode agent hierarchy w
 ### Current State
 ```
 .opencode/agent/
-├── neovim-orchestrator.md (primary)
+├── orchestrator.md (primary)
 └── subagents/
     └── [19 agents, all subagent mode, flat structure]
 ```

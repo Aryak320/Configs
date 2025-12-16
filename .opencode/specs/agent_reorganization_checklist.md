@@ -135,7 +135,7 @@ Quick reference checklist for executing the reorganization plan.
 - [ ] New subagent references exist: `grep "@subagents/analysis/cruft-finder" command/remove-cruft.md`
 
 ### Mode Validation
-- [ ] All primary agents: `grep "mode: primary" agent/{neovim-orchestrator,documenter,implementer,planner,researcher,reviser,tester}.md`
+- [ ] All primary agents: `grep "mode: primary" agent/{orchestrator,documenter,implementer,planner,researcher,reviser,tester}.md`
 - [ ] All subagents: `find agent/subagents -name "*.md" -exec grep -L "mode: subagent" {} \;` (should be empty)
 
 ### Run Validation Script
