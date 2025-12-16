@@ -322,7 +322,8 @@ context:
       7. Validate phase completion
       8. Update phase status: [IN PROGRESS] → [COMPLETED]/[BLOCKED]
       9. Write updated plan file
-      10. Commit if completed
+      10. Generate phase summary (see stage 6.5)
+      11. Commit if completed
     </process>
     <subagent_delegation>
       **INVOKE SUBAGENTS VIA TASK TOOL** for each phase type:
@@ -486,6 +487,41 @@ context:
     </output>
   </stage>
   
+  <stage id="6.5" name="GeneratePhaseSummary">
+    <action>Generate phase summary after phase completion</action>
+    <process>
+      1. Read phase-summary-template.md from .opencode/context/templates/
+      2. Fill in phase details (number, name, date, duration, status)
+      3. Document tasks completed with time spent
+      4. List deliverables (files created/modified, tests, docs)
+      5. Document issues encountered and resolutions
+      6. Include validation results and metrics
+      7. Add lessons learned and next steps
+      8. Append to .opencode/specs/{project}/phase-summaries.md
+      9. Create file if it doesn't exist
+    </process>
+    <summary_content>
+      - **Phase Number**: Phase {X}
+      - **Date Completed**: YYYY-MM-DD
+      - **Duration**: {X} hours (actual vs estimated)
+      - **Status**: [COMPLETE] / [PARTIAL] / [BLOCKED]
+      - **Tasks Completed**: List with time spent per task
+      - **Deliverables**: Files created/modified, tests added, docs updated
+      - **Issues Encountered**: Blockers, technical issues, challenges
+      - **Validation Results**: Test results, quality checks, acceptance criteria
+      - **Metrics**: Code changes, performance impact, quality metrics
+      - **Lessons Learned**: What went well, what could improve
+      - **Next Steps**: Immediate actions, dependencies for next phase
+    </summary_content>
+    <file_location>
+      .opencode/specs/{NNN_project_name}/phase-summaries.md
+    </file_location>
+    <output>
+      - Updated phase-summaries.md
+      - Phase summary appended
+    </output>
+  </stage>
+  
   <stage id="7" name="HandleBlockers">
     <action>Manage blocked phases gracefully</action>
     <process>
@@ -589,7 +625,8 @@ context:
       1. Update project state.json
       2. Update global state
       3. Generate implementation summary
-      4. Report to user
+      4. Update project-summary.md with final results
+      5. Report to user
     </process>
     <state_update>
       {
@@ -601,8 +638,29 @@ context:
         "blockers": [{blocker details}] | []
       }
     </state_update>
+    <project_summary_update>
+      1. Read existing project-summary.md (if exists)
+      2. Update Implementation Results section:
+         - Total phases completed
+         - Total time spent vs estimated
+         - Key deliverables
+         - Test results and coverage
+         - Performance improvements
+      3. Update Lessons Learned section:
+         - What worked well across all phases
+         - What could be improved
+         - Technical insights
+         - Process improvements
+      4. Add final metrics:
+         - Total lines of code changed
+         - Total files modified
+         - Overall test coverage
+         - Build/test time improvements
+      5. Write updated project-summary.md
+    </project_summary_update>
     <output>
       - Updated state files
+      - Updated project-summary.md
       - Implementation summary
       - User report
     </output>
@@ -792,6 +850,29 @@ context:
       - Track implementation metrics
     </updates>
   </global_state>
+  
+  <phase_summaries>
+    <path>.opencode/specs/NNN_project/phase-summaries.md</path>
+    <updates>
+      - Append phase summary after each phase completion
+      - Include phase number, date, duration, status
+      - Document tasks completed, deliverables, issues
+      - Track validation results and metrics
+      - Record lessons learned and next steps
+    </updates>
+    <template>.opencode/context/templates/phase-summary-template.md</template>
+  </phase_summaries>
+  
+  <project_summary>
+    <path>.opencode/specs/NNN_project/project-summary.md</path>
+    <updates>
+      - Update on final implementation completion
+      - Aggregate results from all phase summaries
+      - Include total time spent vs estimated
+      - Document overall deliverables and metrics
+      - Consolidate lessons learned across phases
+    </updates>
+  </project_summary>
 </state_management>
 
 ---
@@ -838,6 +919,30 @@ context:
     <mason>Install LSP servers, linters, formatters</mason>
     <treesitter>Install parsers</treesitter>
   </external_tools>
+  
+  <phase_summary_template>
+    <path>.opencode/context/templates/phase-summary-template.md</path>
+    <usage>Template for generating phase summaries after each phase completion</usage>
+    <integration>
+      - Read template after phase completion
+      - Fill in phase-specific details
+      - Append to phase-summaries.md
+      - Track progress and issues granularly
+    </integration>
+  </phase_summary_template>
+  
+  <summary_files>
+    <phase_summaries>
+      <path>.opencode/specs/{project}/phase-summaries.md</path>
+      <purpose>Granular tracking of each phase completion</purpose>
+      <updates>After each phase completion</updates>
+    </phase_summaries>
+    <project_summary>
+      <path>.opencode/specs/{project}/project-summary.md</path>
+      <purpose>Overall project results and lessons learned</purpose>
+      <updates>On final implementation completion</updates>
+    </project_summary>
+  </summary_files>
 </integrations>
 
 ---

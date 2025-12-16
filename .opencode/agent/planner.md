@@ -32,8 +32,9 @@ context:
 - Create phased implementation plans following STANDARDS.md
 - Define phase dependencies and implementation waves
 - Generate plan metadata (status, type, dependencies, reports)
+- Generate initial project summary (overview, goals, approach)
 - Update TODO.md (Not Started section)
-- Commit plan to git
+- Commit plan and summary to git
 
 ---
 
@@ -59,8 +60,9 @@ context:
   - Creates phased implementation plans
   - Defines phase dependencies and waves
   - Generates plan metadata
+  - Generates initial project summaries
   - Updates TODO.md
-  - Commits plans to git
+  - Commits plans and summaries to git
   
   ### Contrast with Coordinator Agents
   
@@ -262,7 +264,34 @@ context:
     </output>
   </stage>
   
-  <stage id="6" name="UpdateTODO">
+  <stage id="6" name="GenerateProjectSummary">
+    <action>Create initial project summary</action>
+    <process>
+      1. Create summaries/ directory if not exists
+      2. Generate project-summary.md from template
+      3. Fill in project overview section (purpose, scope, success criteria)
+      4. Fill in goals and approach section (primary goals, implementation approach, key decisions)
+      5. Leave results and lessons learned sections for implementer to complete
+      6. Add summary path to state.json
+    </process>
+    <summary_sections_to_fill>
+      - Project Overview (Purpose, Scope, Success Criteria)
+      - Goals and Approach (Primary Goals, Secondary Goals, Implementation Approach, Key Decisions)
+    </summary_sections_to_fill>
+    <summary_sections_for_implementer>
+      - Results and Metrics (to be filled during/after implementation)
+      - Key Files Modified (to be filled during implementation)
+      - Challenges and Solutions (to be filled during implementation)
+      - Lessons Learned (to be filled after implementation)
+      - Future Recommendations (to be filled after implementation)
+    </summary_sections_for_implementer>
+    <output>
+      - summaries/project-summary.md path
+      - Initial summary content
+    </output>
+  </stage>
+  
+  <stage id="7" name="UpdateTODO">
     <action>Add plan to TODO.md (Not Started section)</action>
     <process>
       1. Read .opencode/specs/TODO.md
@@ -279,20 +308,22 @@ context:
     </output>
   </stage>
   
-  <stage id="7" name="UpdateState">
+  <stage id="8" name="UpdateState">
     <action>Update project state.json</action>
     <process>
       1. Read project state.json
       2. Update status: "plan_created"
       3. Add plan path to plans array
-      4. Update last_updated timestamp
+      4. Add summary path to summaries array
+      5. Update last_updated timestamp
     </process>
     <state_update>
       {
         "status": "plan_created",
         "last_updated": "YYYY-MM-DDTHH:MM:SSZ",
         "plans": ["plans/implementation_v1.md"],
-        "current_plan": "plans/implementation_v1.md"
+        "current_plan": "plans/implementation_v1.md",
+        "summaries": ["summaries/project-summary.md"]
       }
     </state_update>
     <output>
@@ -300,10 +331,10 @@ context:
     </output>
   </stage>
   
-  <stage id="8" name="CommitPlan">
-    <action>Commit plan to git</action>
+  <stage id="9" name="CommitPlan">
+    <action>Commit plan and summary to git</action>
     <process>
-      1. Stage plan file and TODO.md
+      1. Stage plan file, summary file, and TODO.md
       2. Create commit with conventional commit format
       3. Log completion to .opencode/logs/planning.log
     </process>
@@ -314,6 +345,7 @@ context:
       - {M} implementation waves
       - Type: {plan_type}
       - Estimated: {hours} hours
+      - Initial project summary created
     </commit_format>
     <output>
       - Commit hash
@@ -449,6 +481,7 @@ context:
       - status: "plan_created"
       - plans: ["plans/implementation_v1.md"]
       - current_plan: "plans/implementation_v1.md"
+      - summaries: ["summaries/project-summary.md"]
       - last_updated: timestamp
     </updates>
   </project_state>
@@ -503,6 +536,7 @@ context:
     ## ✅ Implementation Plan Created: {Project Name}
     
     **Plan**: `.opencode/specs/{NNN_project_name}/plans/implementation_v1.md`
+    **Summary**: `.opencode/specs/{NNN_project_name}/summaries/project-summary.md`
     **Type**: {plan_type}
     **Implementation**: {sequential|parallel}
     **Estimated**: {low}-{high} hours
@@ -528,6 +562,7 @@ context:
     
     **Commit**: {commit_hash}
     **TODO.md**: Updated (Not Started section)
+    **Project Summary**: Initial overview created (to be completed during implementation)
   </success>
   
   <failure>
