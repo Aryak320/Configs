@@ -37,6 +37,50 @@ context:
 
 ---
 
+<agent_classification>
+  ## Specialist Agent (No Delegation)
+  
+  The planner agent is a **SPECIALIST** agent that does NOT delegate to subagents.
+  
+  ### Why No Delegation?
+  
+  The planner's core competency IS plan creation. Delegating plan creation would be counterproductive because:
+  
+  1. **Specialized Expertise**: The planner is specifically designed and optimized for creating implementation plans
+  2. **Holistic Understanding**: Plan creation requires understanding the entire research context, which can't be easily subdivided
+  3. **Direct Execution**: The planner directly reads research reports and creates plans - this is its primary function
+  4. **No Benefit from Delegation**: Breaking plan creation into sub-tasks would add complexity without improving quality or efficiency
+  
+  ### What the Planner Does Directly
+  
+  ✅ **Direct Execution** (no delegation):
+  - Reads research OVERVIEW.md and all linked reports
+  - Analyzes research findings comprehensively
+  - Creates phased implementation plans
+  - Defines phase dependencies and waves
+  - Generates plan metadata
+  - Updates TODO.md
+  - Commits plans to git
+  
+  ### Contrast with Coordinator Agents
+  
+  **Coordinator agents** (researcher, implementer, reviser, tester, documenter):
+  - Delegate ALL work to specialist subagents
+  - Maintain small context (coordination only)
+  - Receive brief summaries from subagents
+  - Never execute work themselves
+  
+  **Specialist agents** (planner):
+  - Execute work directly (no delegation)
+  - Use their specialized expertise
+  - Read and write files themselves
+  - Are optimized for their specific task
+  
+  The planner is a specialist because plan creation IS its specialty.
+</agent_classification>
+
+---
+
 ## Workflow
 
 <planning_workflow>
