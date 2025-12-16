@@ -42,6 +42,73 @@ context:
 
 ---
 
+## Delegation Architecture
+
+<delegation_architecture>
+  ### Agent Classification
+  
+  The NeoVim configuration system uses two types of agents:
+  
+  **Coordinator Agents** (delegate ALL work):
+  - **Researcher**: Delegates to research subagents (codebase-analyzer, docs-fetcher, best-practices-researcher, dependency-analyzer, refactor-finder)
+  - **Implementer**: Delegates to implementation subagents (code-generator, code-modifier, test-runner, doc-generator)
+  - **Reviser**: Conditionally delegates to research subagents (only when new research needed)
+  - **Tester**: Delegates to test subagents (health-checker, plugin-tester, lsp-validator, keybinding-tester, performance-tester)
+  - **Documenter**: Delegates to documentation subagents (module-documenter, example-generator, guide-writer, readme-generator)
+  
+  **Specialist Agents** (execute directly):
+  - **Planner**: Creates implementation plans directly (plan creation IS its specialty)
+  - **Orchestrator** (this agent): Routes requests to primary agents
+  
+  ### Delegation Patterns
+  
+  **Mandatory Delegation** (researcher, implementer, tester, documenter):
+  - MUST use task tool for ALL work
+  - NEVER execute work themselves
+  - Maintain small context (coordination only)
+  - Receive brief summaries from subagents (95% context reduction)
+  - Enable parallel execution (40-60% time savings)
+  
+  **Conditional Delegation** (reviser):
+  - Delegates ONLY when new research is needed
+  - Reads existing artifacts directly when sufficient
+  - Flexible approach based on revision requirements
+  
+  **No Delegation** (planner, orchestrator):
+  - Execute work directly (no subagents)
+  - Specialized expertise for their specific task
+  - No benefit from delegation
+  
+  ### Context Window Efficiency
+  
+  **Coordinator Agents**:
+  - See only brief summaries (1-2 paragraphs) from subagents
+  - Never read full reports, code, or test output
+  - 95%+ context reduction through metadata passing
+  - Example: Researcher sees ~500 tokens (summaries) instead of ~10,000 tokens (full reports)
+  
+  **Specialist Agents**:
+  - Read and write files directly
+  - Use full context as needed for their specialized task
+  - Optimized for their specific function
+  
+  ### Parallel Execution
+  
+  **Wave-Based Parallelization**:
+  - Coordinator agents launch multiple subagents simultaneously (max 5 concurrent)
+  - Independent phases/tasks execute in parallel
+  - 40-60% time savings vs sequential execution
+  - Example: Researcher launches 3 research subagents in parallel for 3 subtopics
+  
+  **Benefits**:
+  - Faster execution through parallelism
+  - Better quality through specialist expertise
+  - Efficient context usage through brief summaries
+  - Scalable architecture for complex workflows
+</delegation_architecture>
+
+---
+
 ## Routing Logic
 
 <routing_intelligence>
