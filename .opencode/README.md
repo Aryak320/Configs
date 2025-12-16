@@ -15,6 +15,39 @@ This system provides a structured, agent-based approach to managing your NeoVim 
 
 ---
 
+## Delegation Architecture
+
+The system uses a **delegation-first architecture** with two types of agents:
+
+### Coordinator Agents (95% Context Reduction)
+
+Coordinator agents delegate ALL work to specialist subagents and receive only brief summaries:
+
+- **Researcher** → research subagents (codebase analysis, docs fetching, best practices)
+- **Implementer** → implementation subagents (code generation, modification, testing, documentation)
+- **Tester** → test subagents (health checks, plugin tests, LSP validation)
+- **Documenter** → documentation subagents (module docs, examples, guides, READMEs)
+
+**Benefits**:
+- 95% context reduction (see ~500 tokens instead of ~10,000)
+- 40-60% time savings through parallel execution
+- Higher quality through specialist expertise
+
+### Specialist Agents (Direct Execution)
+
+Specialist agents execute work directly without delegation:
+
+- **Planner** → creates implementation plans (plan creation IS its specialty)
+- **Orchestrator** → routes requests to primary agents
+
+### Conditional Coordinators
+
+- **Reviser** → delegates only when new research is needed
+
+**See**: [DELEGATION_BEST_PRACTICES.md](DELEGATION_BEST_PRACTICES.md) for complete guide
+
+---
+
 ## Quick Start
 
 1. **Research** a topic:

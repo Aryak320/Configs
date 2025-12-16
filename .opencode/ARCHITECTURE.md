@@ -15,6 +15,118 @@
 
 ---
 
+## Delegation Patterns
+
+The system uses two types of agents with distinct delegation patterns:
+
+### Coordinator Agents (Delegate ALL Work)
+
+**Pattern**: Mandatory delegation via task tool
+
+**Agents**:
+- **Researcher**: Delegates to research subagents (codebase-analyzer, docs-fetcher, best-practices-researcher, dependency-analyzer, refactor-finder)
+- **Implementer**: Delegates to implementation subagents (code-generator, code-modifier, test-runner, doc-generator)
+- **Tester**: Delegates to test subagents (health-checker, plugin-tester, lsp-validator, keybinding-tester, performance-tester)
+- **Documenter**: Delegates to documentation subagents (module-documenter, example-generator, guide-writer, readme-generator)
+
+**Characteristics**:
+- Use task tool for ALL work execution
+- Maintain small context (coordination only)
+- Receive brief summaries from subagents (95% context reduction)
+- Enable parallel execution (40-60% time savings)
+- Never execute work themselves
+
+**Example**:
+```
+Researcher:
+  1. Creates 3 report files for subtopics
+  2. Launches 3 research subagents in parallel:
+     task(subagent_type="subagents/research/codebase-analyzer", ...)
+     task(subagent_type="subagents/research/docs-fetcher", ...)
+     task(subagent_type="subagents/research/best-practices-researcher", ...)
+  3. Receives 3 brief summaries (never reads full reports)
+  4. Synthesizes summaries into OVERVIEW.md
+  
+Result: 95% context reduction (~500 tokens vs ~10,000 tokens)
+```
+
+### Conditional Coordinators (Delegate When Needed)
+
+**Pattern**: Conditional delegation based on requirements
+
+**Agents**:
+- **Reviser**: Delegates to research subagents only when new research is needed
+
+**Characteristics**:
+- Delegate only when specific conditions are met
+- Read existing artifacts directly when sufficient
+- Flexible approach based on task requirements
+
+**Example**:
+```
+Reviser:
+  Scenario 1 (No new research needed):
+    - Reads existing plan and research directly
+    - Creates new plan version
+    - No delegation
+  
+  Scenario 2 (New research needed):
+    - Invokes research subagents via task tool
+    - Receives brief summaries
+    - Incorporates into revised plan
+```
+
+### Specialist Agents (No Delegation)
+
+**Pattern**: Direct execution without delegation
+
+**Agents**:
+- **Planner**: Creates implementation plans directly (plan creation IS its specialty)
+- **Orchestrator**: Routes requests to primary agents
+
+**Characteristics**:
+- Execute work directly (no subagents)
+- Use specialized expertise for their specific task
+- Read and write files themselves
+- No benefit from delegation
+
+**Example**:
+```
+Planner:
+  1. Reads research OVERVIEW.md and all linked reports
+  2. Analyzes findings comprehensively
+  3. Creates phased implementation plan directly
+  4. Writes plan file
+  5. Updates TODO.md
+  6. Commits to git
+  
+No delegation - plan creation IS the planner's specialty
+```
+
+### Benefits of Delegation Architecture
+
+**Context Window Efficiency**:
+- Coordinator agents see only brief summaries (1-2 paragraphs)
+- 95%+ context reduction through metadata passing
+- Example: Researcher sees ~500 tokens instead of ~10,000 tokens
+
+**Parallel Execution**:
+- Independent tasks execute simultaneously (max 5 concurrent)
+- 40-60% time savings vs sequential execution
+- Example: 3 research subtopics complete in parallel
+
+**Specialist Expertise**:
+- Each subagent is optimized for its specific task type
+- Higher quality output through specialization
+- Focused implementation per task
+
+**Scalability**:
+- System can handle complex workflows efficiently
+- Context usage remains bounded regardless of task complexity
+- Parallel execution scales with available concurrency
+
+---
+
 ## Agent Hierarchy
 
 ```
