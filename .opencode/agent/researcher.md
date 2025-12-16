@@ -33,7 +33,9 @@ context:
 - Break research into 1-5 focused subtopics
 - Delegate to specialized research subagents in parallel (max 5 concurrent)
 - Collect brief summaries and artifact paths from subagents
+- Detect quick-win implementation opportunities (< 15 minutes each)
 - Create comprehensive OVERVIEW.md with links to all reports
+- Document quick wins in QUICK_WINS.md (if identified)
 - Commit research artifacts to git
 - Update project state files
 
@@ -254,7 +256,115 @@ context:
     </output>
   </stage>
   
-  <stage id="3" name="ParallelResearch">
+  <stage id="3" name="DetectQuickWins">
+    <action>Identify quick implementation opportunities</action>
+    <process>
+      1. Analyze research findings for quick-win patterns
+      2. Identify single-file changes or simple configurations
+      3. Verify pattern exists in codebase
+      4. Assess risk and reversibility
+      5. Estimate implementation time (< 15 minutes)
+      6. Document quick wins in QUICK_WINS.md
+    </process>
+    <quick_win_criteria>
+      <single_file>
+        - Modification affects only one file
+        - OR simple configuration change (e.g., plugin option)
+      </single_file>
+      <pattern_exists>
+        - Similar pattern already implemented in codebase
+        - Clear example to follow
+        - No new architectural decisions needed
+      </pattern_exists>
+      <low_risk>
+        - No breaking changes
+        - Easily reversible with git revert
+        - No dependencies on other changes
+        - No impact on existing functionality
+      </low_risk>
+      <time_estimate>
+        - Implementation time < 15 minutes
+        - Includes testing and verification
+        - No research or design phase needed
+      </time_estimate>
+    </quick_win_criteria>
+    <quick_wins_format>
+      # Quick Wins
+      
+      Quick implementation opportunities (< 15 minutes each)
+      
+      ## Quick Win 1: [Title]
+      **File**: path/to/file
+      **Change**: Brief description of the change
+      **Pattern**: Reference to existing pattern in codebase
+      **Time**: < 15 minutes
+      **Risk**: Low
+      **Reversible**: Yes
+      **Example**: Code snippet or reference to similar implementation
+      
+      ## Quick Win 2: [Title]
+      ...
+    </quick_wins_format>
+    <examples>
+      <example_1>
+        ## Quick Win 1: Add lazy-loading to telescope.nvim
+        **File**: lua/plugins/telescope.lua
+        **Change**: Add event="VeryLazy" to telescope plugin spec
+        **Pattern**: Same pattern used in lua/plugins/nvim-tree.lua (line 15)
+        **Time**: < 5 minutes
+        **Risk**: Low (defers loading, no functionality change)
+        **Reversible**: Yes (git revert)
+        **Example**:
+        ```lua
+        -- Current (lua/plugins/telescope.lua)
+        return {
+          "nvim-telescope/telescope.nvim",
+          config = function() ... end,
+        }
+        
+        -- Change to (following nvim-tree pattern)
+        return {
+          "nvim-telescope/telescope.nvim",
+          event = "VeryLazy",
+          config = function() ... end,
+        }
+        ```
+      </example_1>
+      <example_2>
+        ## Quick Win 2: Enable LSP inlay hints
+        **File**: lua/lsp/init.lua
+        **Change**: Add inlay_hint.enable() call in on_attach
+        **Pattern**: Similar to semantic_tokens_full pattern (line 42)
+        **Time**: < 10 minutes
+        **Risk**: Low (visual enhancement only)
+        **Reversible**: Yes (git revert)
+        **Example**:
+        ```lua
+        -- Add to on_attach function (lua/lsp/init.lua:42)
+        if client.server_capabilities.inlayHintProvider then
+          vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+        end
+        ```
+      </example_2>
+    </examples>
+    <anti_patterns>
+      <not_quick_wins>
+        - Multi-file refactoring (affects > 1 file)
+        - New architectural patterns (no existing example)
+        - Breaking changes (requires migration)
+        - Complex logic changes (> 15 minutes)
+        - Dependencies on other changes (blocked)
+        - Requires external research (no clear pattern)
+      </not_quick_wins>
+    </anti_patterns>
+    <output>
+      - QUICK_WINS.md file path (if quick wins identified)
+      - Number of quick wins detected
+      - Brief summary of opportunities
+    </output>
+  </stage>
+  
+  <stage id="4" name="ParallelResearch">
     <action>Invoke research subagents in parallel</action>
     <process>
       1. **INVOKE SUBAGENTS VIA TASK TOOL** (1-5 concurrent, max 5):
@@ -392,15 +502,16 @@ context:
     </output>
   </stage>
   
-  <stage id="4" name="SynthesizeOverview">
+  <stage id="5" name="SynthesizeOverview">
     <action>Create OVERVIEW.md with research synthesis</action>
     <process>
       1. Compile brief summaries from all subagents
       2. Create OVERVIEW.md in reports/ directory
       3. Write research summary section
       4. Add links to all detailed reports
-      5. Include metadata (date, subtopics, confidence levels)
-      6. Provide high-level recommendations
+      5. Add link to QUICK_WINS.md (if exists)
+      6. Include metadata (date, subtopics, confidence levels)
+      7. Provide high-level recommendations
     </process>
     <overview_format>
       # Research Overview: {Project Name}
@@ -408,6 +519,7 @@ context:
       **Date**: YYYY-MM-DD
       **Research Prompt**: {Original user prompt}
       **Subtopics**: {Number of research areas}
+      **Quick Wins**: {Number of quick wins identified}
       
       ## Summary
       
@@ -416,6 +528,15 @@ context:
       ## Key Findings
       
       {Bullet points of most important discoveries}
+      
+      ## Quick Wins
+      
+      {If quick wins identified}:
+      Found {N} quick implementation opportunities (< 15 minutes each).
+      See [QUICK_WINS.md](./QUICK_WINS.md) for details.
+      
+      {If no quick wins}:
+      No quick wins identified. All changes require careful planning and implementation.
       
       ## Detailed Reports
       
@@ -428,11 +549,15 @@ context:
       
       {High-level recommendations for next steps}
       
+      {If quick wins exist}:
+      **Quick Start**: Consider implementing quick wins first for immediate improvements.
+      
       ## Metadata
       
       - **Confidence Level**: High/Medium/Low
       - **Sources**: {Number of sources consulted}
       - **Research Duration**: {Time taken}
+      - **Quick Wins**: {Number identified}
     </overview_format>
     <output>
       - OVERVIEW.md path
@@ -440,18 +565,19 @@ context:
     </output>
   </stage>
   
-  <stage id="5" name="CommitAndFinalize">
+  <stage id="6" name="CommitAndFinalize">
     <action>Commit research artifacts and update state</action>
     <process>
-      1. Stage all report files and OVERVIEW.md
+      1. Stage all report files, OVERVIEW.md, and QUICK_WINS.md (if exists)
       2. Create git commit with conventional commit format
-      3. Update project state.json (status: research_complete)
+      3. Update project state.json (status: research_complete, quick_wins count)
       4. Log completion to .opencode/logs/research.log
     </process>
     <commit_format>
       research: complete {project_name} investigation
       
       - Created {N} research reports
+      - Identified {M} quick wins
       - Analyzed: {key areas}
       - Findings: {brief summary}
     </commit_format>
@@ -462,6 +588,197 @@ context:
     </output>
   </stage>
 </research_workflow>
+
+---
+
+## Quick-Win Detection Methodology
+
+<quick_win_detection>
+  <detection_process>
+    <step id="1" name="AnalyzeFindings">
+      <action>Review research findings for simple changes</action>
+      <criteria>
+        - Single file modifications
+        - Simple configuration changes
+        - Pattern-based implementations
+        - Low-risk improvements
+      </criteria>
+    </step>
+    
+    <step id="2" name="VerifyPattern">
+      <action>Confirm pattern exists in codebase</action>
+      <validation>
+        - Search for similar implementations
+        - Verify pattern is established
+        - Ensure no architectural changes needed
+        - Confirm example is clear and complete
+      </validation>
+    </step>
+    
+    <step id="3" name="AssessRisk">
+      <action>Evaluate risk and reversibility</action>
+      <risk_factors>
+        - Breaking changes: DISQUALIFIES
+        - Multi-file impact: DISQUALIFIES
+        - Complex logic: DISQUALIFIES
+        - Dependencies on other changes: DISQUALIFIES
+        - Easily reversible: REQUIRED
+        - No functionality impact: PREFERRED
+      </risk_factors>
+    </step>
+    
+    <step id="4" name="EstimateTime">
+      <action>Estimate implementation time</action>
+      <time_breakdown>
+        - Code change: < 5 minutes
+        - Testing: < 5 minutes
+        - Verification: < 5 minutes
+        - Total: < 15 minutes
+      </time_breakdown>
+      <disqualifiers>
+        - Requires research: NOT a quick win
+        - Requires design decisions: NOT a quick win
+        - Requires testing infrastructure: NOT a quick win
+        - Requires documentation updates: NOT a quick win
+      </disqualifiers>
+    </step>
+    
+    <step id="5" name="DocumentQuickWin">
+      <action>Create QUICK_WINS.md entry</action>
+      <required_fields>
+        - Title: Clear, descriptive name
+        - File: Exact file path
+        - Change: Brief description
+        - Pattern: Reference to existing pattern
+        - Time: Estimated time (< 15 minutes)
+        - Risk: Risk level (must be Low)
+        - Reversible: Must be Yes
+        - Example: Code snippet or reference
+      </required_fields>
+    </step>
+  </detection_process>
+  
+  <quick_win_patterns>
+    <pattern_1 name="LazyLoadingAddition">
+      <description>Add lazy-loading to plugin without it</description>
+      <criteria>
+        - Plugin spec exists
+        - Lazy-loading pattern used elsewhere
+        - No functionality change
+        - Simple event/cmd/ft trigger
+      </criteria>
+      <example>
+        Add event="VeryLazy" to plugin spec
+        Pattern: lua/plugins/nvim-tree.lua (line 15)
+        Time: < 5 minutes
+      </example>
+    </pattern_1>
+    
+    <pattern_2 name="LSPCapabilityEnable">
+      <description>Enable LSP capability that's disabled</description>
+      <criteria>
+        - LSP server supports capability
+        - Similar capability already enabled
+        - No breaking changes
+        - Visual enhancement only
+      </criteria>
+      <example>
+        Enable inlay hints in on_attach
+        Pattern: semantic_tokens pattern (line 42)
+        Time: < 10 minutes
+      </example>
+    </pattern_2>
+    
+    <pattern_3 name="ConfigOptionToggle">
+      <description>Toggle simple configuration option</description>
+      <criteria>
+        - Boolean or simple value change
+        - No side effects
+        - Easily reversible
+        - Clear documentation
+      </criteria>
+      <example>
+        Enable relative line numbers
+        Pattern: number option (line 8)
+        Time: < 2 minutes
+      </example>
+    </pattern_3>
+    
+    <pattern_4 name="KeybindingAddition">
+      <description>Add keybinding following existing pattern</description>
+      <criteria>
+        - Keybinding pattern established
+        - Function already exists
+        - No conflicts
+        - Clear documentation
+      </criteria>
+      <example>
+        Add keybinding for existing function
+        Pattern: lua/keybindings.lua (line 25-30)
+        Time: < 5 minutes
+      </example>
+    </pattern_4>
+  </quick_win_patterns>
+  
+  <anti_patterns>
+    <not_quick_win_1>
+      <name>Multi-file refactoring</name>
+      <reason>Affects multiple files, requires coordination</reason>
+      <time>Usually > 30 minutes</time>
+    </not_quick_win_1>
+    
+    <not_quick_win_2>
+      <name>New architectural pattern</name>
+      <reason>No existing example, requires design</reason>
+      <time>Requires research and planning</time>
+    </not_quick_win_2>
+    
+    <not_quick_win_3>
+      <name>Breaking changes</name>
+      <reason>Requires migration, testing, documentation</reason>
+      <time>Usually > 1 hour</time>
+    </not_quick_win_3>
+    
+    <not_quick_win_4>
+      <name>Complex logic changes</name>
+      <reason>Requires careful testing, edge case handling</reason>
+      <time>Usually > 30 minutes</time>
+    </not_quick_win_4>
+    
+    <not_quick_win_5>
+      <name>Dependency on other changes</name>
+      <reason>Blocked until dependencies complete</reason>
+      <time>Cannot estimate until unblocked</time>
+    </not_quick_win_5>
+  </anti_patterns>
+  
+  <quality_gates>
+    <gate_1 name="SingleFile">
+      <check>Change affects only one file OR simple config</check>
+      <fail_action>Not a quick win</fail_action>
+    </gate_1>
+    
+    <gate_2 name="PatternExists">
+      <check>Similar pattern exists in codebase</check>
+      <fail_action>Not a quick win (requires design)</fail_action>
+    </gate_2>
+    
+    <gate_3 name="LowRisk">
+      <check>No breaking changes, easily reversible</check>
+      <fail_action>Not a quick win (too risky)</fail_action>
+    </gate_3>
+    
+    <gate_4 name="TimeEstimate">
+      <check>Implementation time < 15 minutes</check>
+      <fail_action>Not a quick win (too complex)</fail_action>
+    </gate_4>
+    
+    <gate_5 name="NoDependencies">
+      <check>No dependencies on other changes</check>
+      <fail_action>Not a quick win (blocked)</fail_action>
+    </gate_5>
+  </quality_gates>
+</quick_win_detection>
 
 ---
 
@@ -552,6 +869,8 @@ context:
           "subtopics": ["topic1", "topic2", ...],
           "reports": ["reports/topic1.md", "reports/topic2.md", ...],
           "overview": "reports/OVERVIEW.md",
+          "quick_wins": "reports/QUICK_WINS.md",
+          "quick_wins_count": 0,
           "confidence": "high|medium|low"
         },
         "plans": [],
@@ -562,6 +881,9 @@ context:
       {
         "status": "research_complete",
         "last_updated": "YYYY-MM-DDTHH:MM:SSZ",
+        "research": {
+          "quick_wins_count": 3
+        },
         "commits": ["abc123"]
       }
     </final_state>
@@ -619,6 +941,7 @@ context:
     
     **Project**: `.opencode/specs/{NNN_project_name}/`
     **Overview**: `.opencode/specs/{NNN_project_name}/reports/OVERVIEW.md`
+    **Quick Wins**: {N} opportunities identified
     
     ### Research Summary
     
@@ -630,8 +953,30 @@ context:
     2. {Subtopic 2} - {Brief summary}
     ...
     
+    ### Quick Wins ({M})
+    
+    {If quick wins exist}:
+    Found {M} quick implementation opportunities (< 15 minutes each):
+    - See `.opencode/specs/{NNN_project_name}/reports/QUICK_WINS.md`
+    - Consider implementing these first for immediate improvements
+    
+    {If no quick wins}:
+    No quick wins identified. All changes require careful planning.
+    
     ### Next Steps
     
+    {If quick wins exist}:
+    **Option 1 - Quick Start**: Implement quick wins first
+    ```
+    /implement .opencode/specs/{NNN_project_name}/reports/QUICK_WINS.md
+    ```
+    
+    **Option 2 - Full Plan**: Create comprehensive implementation plan
+    ```
+    /plan .opencode/specs/{NNN_project_name}/reports/OVERVIEW.md "Your planning prompt"
+    ```
+    
+    {If no quick wins}:
     Create implementation plan:
     ```
     /plan .opencode/specs/{NNN_project_name}/reports/OVERVIEW.md "Your planning prompt"

@@ -157,6 +157,10 @@ Specialized Subagents (organized by category: research, implementation, analysis
 - `/plan` → planner agent
 - `/revise` → reviser agent
 - `/implement` → implementer agent
+- `/approve` → direct execution (utility)
+- `/reject` → direct execution (utility)
+- `/quick-implement` → implementer agent (quick-win mode)
+- `/rollback` → direct execution (specialist)
 - `/create-agent` → meta agent
 - `/create-command` → meta agent
 - `/modify-agent` → meta agent
@@ -474,6 +478,9 @@ Tracks:
 - Plan versions
 - Implementation progress
 - Commits
+- Approval status (approved/rejected)
+- Approval metadata (date, user, reason)
+- Rollback history
 
 ### TODO Tracking
 
@@ -499,11 +506,45 @@ Researcher → [Parallel Subagents]
   ↓
 Subagents → Return summaries
   ↓
-Researcher → Create OVERVIEW.md
+Researcher → Create OVERVIEW.md (with Quick Wins section)
   ↓
 Researcher → Commit + return path
   ↓
 User ← OVERVIEW path
+```
+
+### Approval Workflow
+
+```
+User → /plan overview_path
+  ↓
+Planner → Create implementation_v1.md
+  ↓
+Planner → Update state.json (phase: "planning")
+  ↓
+User reviews plan
+  ↓
+User → /approve project-NNN
+  ↓
+Approve Command → Update state.json (phase: "approved")
+  ↓
+Approve Command → Commit approval
+  ↓
+User ← Ready for /implement
+```
+
+**OR**
+
+```
+User reviews plan
+  ↓
+User → /reject project-NNN "reason"
+  ↓
+Reject Command → Update state.json (status: "cancelled")
+  ↓
+Reject Command → Commit rejection
+  ↓
+User ← Project cancelled
 ```
 
 ### Implementation Flow
@@ -512,6 +553,8 @@ User ← OVERVIEW path
 User → /implement plan_path
   ↓
 Orchestrator → Implementer Agent
+  ↓
+Implementer → Verify plan approved (state.json check)
   ↓
 Implementer → Read plan
   ↓
@@ -529,6 +572,58 @@ For each wave:
 Implementer → Update TODO
   ↓
 User ← Completion summary
+```
+
+### Quick-Win Flow
+
+```
+User → /quick-implement [selector]
+  ↓
+Orchestrator → Implementer Agent (quick-win mode)
+  ↓
+Implementer → Read research OVERVIEW.md
+  ↓
+Implementer → Extract Quick Wins section
+  ↓
+Implementer → Present quick wins to user
+  ↓
+User confirms selection
+  ↓
+Implementer → Invoke implementation subagents
+  ↓
+Subagents → Modify/create files (max 3 files)
+  ↓
+Implementer → Run health checks
+  ↓
+Implementer → Commit changes
+  ↓
+User ← Quick win complete (60-80% faster than full workflow)
+```
+
+### Rollback Flow
+
+```
+User → /rollback <target>
+  ↓
+Rollback Command → Parse target (last-phase, commit-hash, project-NNN)
+  ↓
+Rollback Command → Identify target commit
+  ↓
+Rollback Command → Show diff preview
+  ↓
+Rollback Command → Require user confirmation
+  ↓
+User confirms
+  ↓
+Rollback Command → Execute git revert/reset
+  ↓
+Rollback Command → Update state.json
+  ↓
+Rollback Command → Run health checks
+  ↓
+Rollback Command → Update TODO.md (if project rollback)
+  ↓
+User ← Rollback complete
 ```
 
 ---

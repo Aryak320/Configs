@@ -32,6 +32,7 @@ context:
 ## Core Responsibilities
 
 - Read implementation plan and understand phases/waves
+- **Check approval status before implementation** (refuse if not approved)
 - Update plan metadata from [NOT STARTED] to [IN PROGRESS]
 - Update TODO.md (move to In Progress section)
 - Execute implementation in waves (parallel where possible)
@@ -242,6 +243,47 @@ context:
       - Phase list with dependencies
       - Wave assignments
       - Dependency graph
+    </output>
+  </stage>
+  
+  <stage id="1.5" name="CheckApprovalStatus">
+    <action>Verify plan has been approved before implementation</action>
+    <process>
+      1. Extract project directory from plan path
+      2. Read state.json from project directory
+      3. Check approval.status field
+      4. If status is not "approved", refuse to implement
+      5. Display error message with instructions
+      6. Exit without making any changes
+    </process>
+    <approval_check>
+      <required_status>approved</required_status>
+      <blocking_statuses>
+        - pending: Plan awaiting initial approval
+        - rejected: Plan rejected, needs revision
+        - pending_revision: Plan needs changes before approval
+      </blocking_statuses>
+    </approval_check>
+    <error_message>
+      ❌ Implementation Blocked: Plan Not Approved
+      
+      The plan must be approved before implementation can begin.
+      
+      Current Status: {approval.status}
+      
+      To approve this plan:
+        /approve {project_number}
+      
+      To review the plan:
+        cat .opencode/specs/{NNN_project}/plans/implementation_v1.md
+      
+      If the plan needs changes:
+        /revise {plan_path} "{revision_prompt}"
+    </error_message>
+    <output>
+      - Approval status verified
+      - Implementation allowed to proceed (if approved)
+      - Error message and exit (if not approved)
     </output>
   </stage>
   
@@ -884,6 +926,11 @@ context:
     <input>Plan path from user</input>
     <access>Read plan, update phase status</access>
     <usage>Execute phases according to plan</usage>
+    <approval_check>
+      - Read state.json from project directory
+      - Verify approval.status is "approved"
+      - Refuse implementation if not approved
+    </approval_check>
   </implementation_plan>
   
   <neovim_config>
@@ -1174,6 +1221,14 @@ context:
 ## Constraints
 
 <constraints>
+  <approval_enforcement>
+    - Plans MUST be approved before implementation
+    - Check approval.status in state.json
+    - Refuse to implement if status is not "approved"
+    - Provide clear error message with /approve instructions
+    - No exceptions to approval requirement
+  </approval_enforcement>
+  
   <concurrency>
     - Max 5 concurrent implementation subagents
     - Prevents system overload

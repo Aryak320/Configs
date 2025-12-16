@@ -32,9 +32,11 @@ context:
 - Create phased implementation plans following STANDARDS.md
 - Define phase dependencies and implementation waves
 - Generate plan metadata (status, type, dependencies, reports)
+- Present plan summary and request user approval
+- Handle approval responses (approve/reject/modify)
 - Generate initial project summary (overview, goals, approach)
 - Update TODO.md (Not Started section)
-- Commit plan and summary to git
+- Commit plan and summary to git with approval status
 
 ---
 
@@ -86,6 +88,23 @@ context:
 ## Workflow
 
 <planning_workflow>
+  <approval_flow>
+    The planner workflow includes a mandatory approval gate after plan generation:
+    
+    1. **Plan Created**: Implementation plan generated with all phases and dependencies
+    2. **Generate Summary**: Create concise plan summary for user review
+    3. **Present to User**: Display summary with key metrics and approval prompt
+    4. **Await Approval**: User responds with yes/no/modify
+    5. **Handle Response**:
+       - **yes**: Mark approved, continue to project summary and commit
+       - **no**: Mark rejected, explain cancellation, exit workflow
+       - **modify**: Mark pending revision, collect feedback, exit for revision workflow
+    6. **Update State**: Record approval status, date, and notes in state.json
+    7. **Continue or Exit**: Proceed to summary/commit if approved, exit otherwise
+    
+    This ensures users review and approve plans before implementation begins.
+  </approval_flow>
+  
   <stage id="1" name="ReadResearch">
     <action>Load and analyze research findings</action>
     <process>
@@ -264,7 +283,85 @@ context:
     </output>
   </stage>
   
-  <stage id="6" name="GenerateProjectSummary">
+  <stage id="6" name="RequestApproval">
+    <action>Present plan summary and request user approval</action>
+    <process>
+      1. Generate concise plan summary for user review
+      2. Present summary with key metrics and decisions
+      3. Prompt user for approval decision
+      4. Handle approval response (approve/reject/modify)
+      5. Update state.json with approval status
+      6. If rejected: explain cancellation and exit
+      7. If modify: collect feedback and trigger plan revision
+      8. If approved: mark plan as approved and continue
+    </process>
+    <plan_summary_format>
+      ## 📋 Plan Review: {Project Name}
+      
+      **Type**: {plan_type}
+      **Implementation**: {sequential|parallel}
+      **Estimated Time**: {low}-{high} hours
+      
+      ### Overview
+      {2-3 sentence description of what will be implemented}
+      
+      ### Implementation Structure
+      - **Phases**: {N} phases
+      - **Waves**: {M} waves
+      - **Parallelization**: {X}% of phases can run in parallel
+      
+      ### Key Changes
+      - {Major change 1}
+      - {Major change 2}
+      - {Major change 3}
+      
+      ### Files Affected
+      - {N} files to be modified
+      - {M} files to be created
+      
+      ### Testing Strategy
+      {Brief description of testing approach}
+      
+      ---
+      
+      **Review the full plan**: `.opencode/specs/{NNN_project}/plans/implementation_v1.md`
+      
+      **Approve this plan?**
+      - Type `yes` to approve and proceed to implementation
+      - Type `no` to cancel planning
+      - Type `modify` to provide feedback for plan revision
+    </plan_summary_format>
+    <approval_responses>
+      <yes>
+        - Mark plan as approved in state.json
+        - Set approval_status: "approved"
+        - Set approval_date: current timestamp
+        - Continue to GenerateProjectSummary stage
+      </yes>
+      <no>
+        - Mark plan as rejected in state.json
+        - Set approval_status: "rejected"
+        - Set approval_date: current timestamp
+        - Explain cancellation reason
+        - Exit workflow gracefully
+      </no>
+      <modify>
+        - Mark plan as pending revision in state.json
+        - Set approval_status: "pending_revision"
+        - Collect user feedback on what to change
+        - Store feedback in approval_notes field
+        - Trigger plan revision workflow
+        - Exit current workflow (revision handled separately)
+      </modify>
+    </approval_responses>
+    <output>
+      - Plan summary presented to user
+      - Approval status recorded
+      - User feedback captured (if modify)
+    </output>
+  </stage>
+  
+  <stage id="7" name="GenerateProjectSummary">
     <action>Create initial project summary</action>
     <process>
       1. Create summaries/ directory if not exists
@@ -291,7 +388,7 @@ context:
     </output>
   </stage>
   
-  <stage id="7" name="UpdateTODO">
+  <stage id="8" name="UpdateTODO">
     <action>Add plan to TODO.md (Not Started section)</action>
     <process>
       1. Read .opencode/specs/TODO.md
@@ -308,35 +405,48 @@ context:
     </output>
   </stage>
   
-  <stage id="8" name="UpdateState">
+  <stage id="9" name="UpdateState">
     <action>Update project state.json</action>
     <process>
       1. Read project state.json
-      2. Update status: "plan_created"
+      2. Update status: "plan_approved" (if approved) or "plan_rejected" (if rejected)
       3. Add plan path to plans array
       4. Add summary path to summaries array
-      5. Update last_updated timestamp
+      5. Add approval metadata (status, date, notes)
+      6. Update last_updated timestamp
     </process>
     <state_update>
       {
-        "status": "plan_created",
+        "status": "plan_approved",
         "last_updated": "YYYY-MM-DDTHH:MM:SSZ",
         "plans": ["plans/implementation_v1.md"],
         "current_plan": "plans/implementation_v1.md",
-        "summaries": ["summaries/project-summary.md"]
+        "summaries": ["summaries/project-summary.md"],
+        "approval": {
+          "status": "approved",
+          "date": "YYYY-MM-DDTHH:MM:SSZ",
+          "notes": ""
+        }
       }
     </state_update>
+    <approval_status_values>
+      - "pending": Plan created, awaiting approval
+      - "approved": Plan approved by user, ready for implementation
+      - "rejected": Plan rejected by user, workflow cancelled
+      - "pending_revision": Plan needs modification based on user feedback
+    </approval_status_values>
     <output>
-      - Updated state.json
+      - Updated state.json with approval metadata
     </output>
   </stage>
   
-  <stage id="9" name="CommitPlan">
+  <stage id="10" name="CommitPlan">
     <action>Commit plan and summary to git</action>
     <process>
       1. Stage plan file, summary file, and TODO.md
       2. Create commit with conventional commit format
-      3. Log completion to .opencode/logs/planning.log
+      3. Include approval status in commit message
+      4. Log completion to .opencode/logs/planning.log
     </process>
     <commit_format>
       plan: create implementation plan for {project_name}
@@ -346,6 +456,7 @@ context:
       - Type: {plan_type}
       - Estimated: {hours} hours
       - Initial project summary created
+      - Status: {approval_status}
     </commit_format>
     <output>
       - Commit hash
@@ -478,12 +589,18 @@ context:
   <project_state>
     <path>.opencode/specs/NNN_project/state.json</path>
     <updates>
-      - status: "plan_created"
+      - status: "plan_approved" | "plan_rejected" | "pending_revision"
       - plans: ["plans/implementation_v1.md"]
       - current_plan: "plans/implementation_v1.md"
       - summaries: ["summaries/project-summary.md"]
+      - approval: { status, date, notes }
       - last_updated: timestamp
     </updates>
+    <approval_metadata>
+      - approval.status: "pending" | "approved" | "rejected" | "pending_revision"
+      - approval.date: ISO 8601 timestamp of approval decision
+      - approval.notes: User feedback for modifications (if applicable)
+    </approval_metadata>
   </project_state>
   
   <todo_state>
@@ -532,14 +649,15 @@ context:
 ## Output Format
 
 <output_format>
-  <success>
-    ## ✅ Implementation Plan Created: {Project Name}
+  <success_approved>
+    ## ✅ Implementation Plan Approved: {Project Name}
     
     **Plan**: `.opencode/specs/{NNN_project_name}/plans/implementation_v1.md`
     **Summary**: `.opencode/specs/{NNN_project_name}/summaries/project-summary.md`
     **Type**: {plan_type}
     **Implementation**: {sequential|parallel}
     **Estimated**: {low}-{high} hours
+    **Approval**: ✓ Approved on {date}
     
     ### Plan Summary
     
@@ -555,7 +673,7 @@ context:
     
     ### Next Steps
     
-    Review plan and start implementation:
+    Start implementation:
     ```
     /implement .opencode/specs/{NNN_project_name}/plans/implementation_v1.md
     ```
@@ -563,7 +681,46 @@ context:
     **Commit**: {commit_hash}
     **TODO.md**: Updated (Not Started section)
     **Project Summary**: Initial overview created (to be completed during implementation)
-  </success>
+  </success_approved>
+  
+  <success_rejected>
+    ## ⚠️ Implementation Plan Rejected: {Project Name}
+    
+    **Plan**: `.opencode/specs/{NNN_project_name}/plans/implementation_v1.md`
+    **Status**: Rejected by user
+    **Rejection Date**: {date}
+    
+    The plan has been created but not approved for implementation.
+    
+    ### Next Steps
+    
+    1. Review the plan: `.opencode/specs/{NNN_project_name}/plans/implementation_v1.md`
+    2. Revise research if needed: `/research "{new_prompt}"`
+    3. Create new plan: `/plan {overview_path} "{revised_prompt}"`
+    
+    **Commit**: {commit_hash} (plan saved for reference)
+  </success_rejected>
+  
+  <success_pending_revision>
+    ## 🔄 Implementation Plan Needs Revision: {Project Name}
+    
+    **Plan**: `.opencode/specs/{NNN_project_name}/plans/implementation_v1.md`
+    **Status**: Pending revision
+    **Feedback**: {user_feedback}
+    
+    ### User Requested Changes
+    
+    {formatted_user_feedback}
+    
+    ### Next Steps
+    
+    Revise the plan based on feedback:
+    ```
+    /revise .opencode/specs/{NNN_project_name}/plans/implementation_v1.md
+    ```
+    
+    **Commit**: {commit_hash} (plan saved with feedback)
+  </success_pending_revision>
   
   <failure>
     ## ❌ Planning Failed: {Project Name}

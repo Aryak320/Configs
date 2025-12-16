@@ -160,6 +160,13 @@ Specialist agents execute work directly without delegation:
 - `/revise <plan-path> "<changes>"` - Revise existing plan
 - `/implement <plan-path>` - Execute implementation plan
 
+### Approval Workflow Commands
+
+- `/approve <project-id>` - Approve pending plan and mark ready for implementation
+- `/reject <project-id> "<reason>"` - Reject pending plan with documented reason
+- `/quick-implement [selector] [research-path]` - Execute quick wins directly without planning
+- `/rollback <target>` - Safely rollback changes to previous state
+
 ### Utility Commands
 
 - `/todo` - Show project status
@@ -182,14 +189,43 @@ Specialist agents execute work directly without delegation:
 
 ## Workflows
 
-### Research → Plan → Implement
+### Research → Plan → Approve → Implement
 
 The standard workflow for new features or improvements:
 
 1. **Research**: Investigate the topic thoroughly
 2. **Plan**: Create phased implementation plan
-3. **Implement**: Execute plan with automated testing
-4. (Optional) **Revise**: Update plan if requirements change
+3. **Approve**: Review and approve plan with `/approve`
+4. **Implement**: Execute approved plan with automated testing
+5. (Optional) **Revise**: Update plan if requirements change
+6. (Optional) **Rollback**: Revert changes if issues arise
+
+**Example**:
+```
+/research "Optimize lazy.nvim plugin loading"
+/plan .opencode/specs/001_lazy_loading/reports/OVERVIEW.md
+/approve project-001
+/implement .opencode/specs/001_lazy_loading/plans/implementation_v1.md
+```
+
+### Quick-Win Workflow
+
+For simple, low-risk improvements identified during research:
+
+1. **Research**: Investigate topic and identify quick wins
+2. **Quick-Implement**: Execute quick wins directly (no planning)
+3. **Test**: Automatic health checks after implementation
+
+**Example**:
+```
+/research "Add scrolling keybindings to opencode"
+/quick-implement 1  # Execute first quick win
+```
+
+**Benefits**:
+- 60-80% time savings vs full workflow
+- No planning overhead for simple changes
+- Immediate visible improvements
 
 ### Quick Optimization
 
@@ -197,8 +233,9 @@ For performance improvements and cleanup:
 
 1. `/optimize-performance` - Get optimization recommendations
 2. `/plan` based on recommendations
-3. `/implement` the optimizations
-4. `/test` to verify improvements
+3. `/approve` the plan
+4. `/implement` the optimizations
+5. `/test` to verify improvements
 
 ### Health Maintenance
 
@@ -207,7 +244,7 @@ Regular health checks and cleanup:
 1. `/health-check` - Identify issues
 2. `/remove-cruft` - Find unused code
 3. Create plans to fix issues
-4. Implement fixes
+4. Approve and implement fixes
 
 ### Meta-System Extension
 
@@ -249,6 +286,28 @@ Extend the system dynamically:
 - Research: Up to 5 concurrent subagents
 - Implementation: Parallel phases within waves
 - Fast, efficient operations
+
+### Approval Gates
+
+- Review plans before implementation
+- Approve with `/approve` or reject with `/reject`
+- Document rejection reasons for future reference
+- Prevents unwanted changes from executing
+
+### Quick-Win Detection
+
+- Identify low-risk, high-value improvements during research
+- Execute quick wins directly with `/quick-implement`
+- Skip planning overhead for simple changes
+- 60-80% time savings vs full workflow
+
+### Rollback Safety
+
+- Safe rollback with `/rollback` command
+- Preview changes before reverting
+- User confirmation required
+- Automatic health checks after rollback
+- Preserves git history
 
 ### Git Integration
 
