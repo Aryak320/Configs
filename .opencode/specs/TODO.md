@@ -6,23 +6,6 @@ Track all configuration projects and their status.
 
 ## Not Started
 
-### Project 018: NixOS Sleep Inhibit Toggle in Neovim
-**Path**: `/home/benjamin/.dotfiles/specs/plans/018_nixos_sleep_inhibit_toggle.md`  
-**Plan**: `018_nixos_sleep_inhibit_toggle.md`  
-**Goal**: Add sleep inhibitor toggle mapping under `<leader>rz` in which-key.lua  
-**Phases**: 3 (Module Creation, Integration, Testing)  
-**Waves**: 3 (sequential execution)  
-**Effort**: 2-4 hours  
-**Priority**: Medium
-
-**Key Features**:
-- Lua module for systemd sleep inhibitor management
-- Toggle mapping under `<leader>rz` in which-key.lua
-- Automatic cleanup on Neovim exit
-- Error handling and user notifications
-
-**Research**: [NixOS Sleep Prevention for OpenCode](/home/benjamin/.dotfiles/specs/reports/017_nixos_sleep_prevention_opencode.md)
-
 <!-- New projects will be added here -->
 
 ---
@@ -50,6 +33,23 @@ Track all configuration projects and their status.
 ---
 
 ## Completed
+
+### Project 018: NixOS Sleep Inhibit Toggle in Neovim (Completed 2025-12-20)
+**Path**: `/home/benjamin/.dotfiles/specs/plans/018_nixos_sleep_inhibit_toggle.md`  
+**Plan**: `018_nixos_sleep_inhibit_toggle.md`  
+**Goal**: Add sleep inhibitor toggle mapping under `<leader>rz` in which-key.lua  
+**Phases**: 3/3 (Module Creation, Integration, Testing)  
+**Waves**: 3 (sequential execution)  
+**Effort**: 2-4 hours  
+**Priority**: Medium
+
+**Key Features**:
+- ✅ Lua module for systemd sleep inhibitor management
+- ✅ Toggle mapping under `<leader>rz` in which-key.lua
+- ✅ Automatic cleanup on Neovim exit
+- ✅ Error handling and user notifications
+
+**Commits**: 3 (bba54ef4, e88ac24b, e8426113)
 
 ### Project 003: System Enhancement from ProofChecker Patterns (Completed 2025-12-16)
 **Path**: `specs/003_system_enhancement_from_proofchecker/`  
