@@ -6,6 +6,24 @@ Track all configuration projects and their status.
 
 ## Not Started
 
+### Project 005: OpenCode Keybinding Customizations
+**Path**: `specs/005_opencode_keybinding_customizations/`  
+**Plan**: `plans/level_0_plan.md`  
+**Goal**: Implement custom OpenCode keybindings with Ctrl+D leader and vim-like navigation  
+**Phases**: 5 (Backup, Research, Implementation, Testing, Documentation)  
+**Waves**: 3 (optimized for parallel execution)  
+**Effort**: 4-6 hours  
+**Priority**: Medium
+
+**Key Features**:
+- Leader key change: Ctrl+X → Ctrl+D
+- Session navigation: `<leader>j/k` for child session cycling
+- Message navigation: Alt+j/k for half-page, `<leader>h/l` for first/last
+- Input changes: Remove Ctrl+J from newline, disable Ctrl+D delete
+- Vim-like editing enhancements (based on OpenCode capabilities)
+
+**Research**: [opencode_keybinds_research.md](opencode_keybinds_research.md)
+
 <!-- New projects will be added here -->
 
 ---
