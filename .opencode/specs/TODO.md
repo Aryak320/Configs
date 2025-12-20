@@ -12,27 +12,27 @@ Track all configuration projects and their status.
 
 ## In Progress
 
-### Project 005: OpenCode Keybinding Customizations (Phase 1/5)
+---
+
+## Completed
+
+### Project 005: OpenCode Keybinding Customizations (Completed 2025-12-20)
 **Path**: `specs/005_opencode_keybinding_customizations/`  
 **Plan**: `plans/level_0_plan.md`  
 **Goal**: Implement custom OpenCode keybindings with Ctrl+D leader and vim-like navigation  
-**Phases**: 5 (Backup, Research, Implementation, Testing, Documentation)  
+**Phases**: 5/5 (Backup, Research, Implementation, Testing, Documentation)  
 **Waves**: 3 (optimized for parallel execution)  
 **Effort**: 4-6 hours  
 **Priority**: Medium
 
 **Key Features**:
-- Leader key change: Ctrl+X → Ctrl+D
-- Session navigation: `<leader>j/k` for child session cycling
-- Message navigation: Alt+j/k for half-page, `<leader>h/l` for first/last
-- Input changes: Remove Ctrl+J from newline, disable Ctrl+D delete
-- Vim-like editing enhancements (based on OpenCode capabilities)
+- ✅ Leader key change: Ctrl+X → Ctrl+D
+- ✅ Session navigation: `<leader>j/k` for child session cycling
+- ✅ Message navigation: Alt+j/k for half-page, `<leader>h/l` for first/last
+- ✅ Input changes: Remove Ctrl+J from newline, disable Ctrl+D delete
+- ✅ Vim-like editing: All 5 phases implemented (navigation, word movement, deletion, visual, undo/redo)
 
-**Research**: [opencode_keybinds_research.md](opencode_keybinds_research.md)
-
----
-
-## Completed
+**Commits**: 5 (9c8d166f, 2f36a8ad, 13a657a0, b0d31de4, 6071723c)
 
 ### Project 018: NixOS Sleep Inhibit Toggle in Neovim (Completed 2025-12-20)
 **Path**: `/home/benjamin/.dotfiles/specs/plans/018_nixos_sleep_inhibit_toggle.md`  
