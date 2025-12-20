@@ -77,7 +77,7 @@ Phase 1 ──> Phase 2 ──> Phase 3
 
 ---
 
-## Phase 2: Integrate Sleep Inhibitor into which-key.lua [NOT STARTED]
+## Phase 2: Integrate Sleep Inhibitor into which-key.lua [COMPLETED]
 
 **Dependencies**: [1]
 
