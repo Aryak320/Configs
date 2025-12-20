@@ -4,7 +4,7 @@
 
 - **Date**: 2025-12-20
 - **Feature**: Add sleep inhibitor toggle mapping under `<leader>rz` in which-key.lua
-- **Status**: [IN PROGRESS]
+- **Status**: [COMPLETED]
 - **Type**: new_feature
 - **Implementation**: sequential
 - **Estimated Hours**: 2-4 hours
@@ -129,7 +129,7 @@ Phase 1 ──> Phase 2 ──> Phase 3
 
 ---
 
-## Phase 3: End-to-End Testing and Documentation [NOT STARTED]
+## Phase 3: End-to-End Testing and Documentation [COMPLETED]
 
 **Dependencies**: [2]
 
