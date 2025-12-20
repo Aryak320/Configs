@@ -6,7 +6,30 @@ Track all configuration projects and their status.
 
 ## Not Started
 
-### Project 005: OpenCode Keybinding Customizations
+### Project 018: NixOS Sleep Inhibit Toggle in Neovim
+**Path**: `/home/benjamin/.dotfiles/specs/plans/018_nixos_sleep_inhibit_toggle.md`  
+**Plan**: `018_nixos_sleep_inhibit_toggle.md`  
+**Goal**: Add sleep inhibitor toggle mapping under `<leader>rz` in which-key.lua  
+**Phases**: 3 (Module Creation, Integration, Testing)  
+**Waves**: 3 (sequential execution)  
+**Effort**: 2-4 hours  
+**Priority**: Medium
+
+**Key Features**:
+- Lua module for systemd sleep inhibitor management
+- Toggle mapping under `<leader>rz` in which-key.lua
+- Automatic cleanup on Neovim exit
+- Error handling and user notifications
+
+**Research**: [NixOS Sleep Prevention for OpenCode](/home/benjamin/.dotfiles/specs/reports/017_nixos_sleep_prevention_opencode.md)
+
+<!-- New projects will be added here -->
+
+---
+
+## In Progress
+
+### Project 005: OpenCode Keybinding Customizations (Phase 1/5)
 **Path**: `specs/005_opencode_keybinding_customizations/`  
 **Plan**: `plans/level_0_plan.md`  
 **Goal**: Implement custom OpenCode keybindings with Ctrl+D leader and vim-like navigation  
@@ -23,14 +46,6 @@ Track all configuration projects and their status.
 - Vim-like editing enhancements (based on OpenCode capabilities)
 
 **Research**: [opencode_keybinds_research.md](opencode_keybinds_research.md)
-
-<!-- New projects will be added here -->
-
----
-
-## In Progress
-
-<!-- Projects currently being implemented -->
 
 ---
 
